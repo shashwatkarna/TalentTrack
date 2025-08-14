@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Selection</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Domain selection page styling */
+        body {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .domain-selection-page {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .domain-selection-page h1 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .domain-selection-page form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .domain-selection-page label {
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #ecf0f1;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .domain-selection-page label:hover {
+            color: #f0a500;
+        }
+
+        .domain-selection-page input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .domain-selection-page button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 165, 0, 0.3);
+        }
+
+        .domain-selection-page button:hover {
+            background-color: #1c8686;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(240, 165, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            .domain-selection-page {
+                padding: 30px;
+            }
+
+            .domain-selection-page h1 {
+                font-size: 36px;
+            }
+
+            .domain-selection-page label {
+                font-size: 18px;
+            }
+
+            .domain-selection-page button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="domain-selection-page">
+        <h1>Select a Domain</h1>
+        <form id="domainForm">
+            <label>
+                <input type="radio" name="domain" value="it"> IT Sector
+            </label><br>
+            <label>
+                <input type="radio" name="domain" value="public"> Public Sector
+            </label><br>
+            <label>
+                <input type="radio" name="domain" value="others"> Others
+            </label><br><br>
+            <button type="button" onclick="submitDomain()">Next</button>
+        </form>
+    </div>
+    
+    <script>
+        function submitDomain() {
+            const form = document.getElementById('domainForm');
+            const selectedDomain = form.querySelector('input[name="domain"]:checked');
+            if (selectedDomain) {
+                // Save the selected domain to localStorage
+                localStorage.setItem('selectedDomain', selectedDomain.value);
+                window.location.href = '01.html';
+            } else {
+                alert('Please select a domain to proceed.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment 1</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and background */
+        body {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* Assessment page styling */
+        .assessment-page {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .assessment-page h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .assessment-page form {
+            margin-bottom: 20px;
+        }
+
+        .assessment-page p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .assessment-page label {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #ecf0f1;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .assessment-page label:hover {
+            color: #f0a500;
+        }
+
+        .assessment-page input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .assessment-page button {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 165, 0, 0.3);
+        }
+
+        .assessment-page button:hover {
+            background-color: #1c8686;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(240, 165, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            .assessment-page {
+                padding: 20px;
+            }
+
+            .assessment-page h1 {
+                font-size: 28px;
+            }
+
+            .assessment-page p {
+                font-size: 18px;
+            }
+
+            .assessment-page button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-page">
+        <h1>Assessment 1: In Which Field Are You Interested?</h1>
+        <form id="assessment1Form"></form>
+        <button type="button" onclick="submitAssessment1()">Next</button>
+    </div>
+
+    <script>
+        // Object storing fields for each domain
+        const questions = {
+            it: [
+                "Networking",
+                "AIML",
+                "Cyber-Security",
+                "Frontend-Developer",
+                "Backend-Developer",
+                "None"
+            ],
+            public: [
+                "Civil-Services",
+                "Defense",
+                "Education",
+                "Healthcare",
+                "Infrastructure",
+                "None"
+            ],
+            others: [
+                "Marketing",
+                "Finance",
+                "Sales",
+                "Human-Resources",
+                "Legal",
+                "None"
+            ]
+        };
+    
+        // Initialize userData and retrieve the selected domain from localStorage
+        const userData = {
+            domain: localStorage.getItem('selectedDomain')
+        };
+    
+        // Function to load the question and fields based on the selected domain
+        function loadAssessment1() {
+            const form = document.getElementById('assessment1Form');
+            const domain = userData.domain;
+    
+            // If no domain is selected, redirect to the domain selection page
+            if (!domain) {
+                alert('No domain selected. Please go back and select a domain.');
+                window.location.href = 'index.html';
+                return;
+            }
+    
+            // Clear any previous options (in case of reload)
+            form.innerHTML = '';
+    
+            // Add a question and options for the selected domain
+            form.innerHTML = `<p>In which field are you interested?</p>`;
+    
+            // Generate the list of options based on the selected domain
+            if (questions[domain]) {
+                questions[domain].forEach((option) => {
+                    form.innerHTML += `
+                        <label>
+                            <input type="radio" name="option" value="${option}">
+                            ${option}
+                        </label><br>`;
+                });
+            } else {
+                alert('Invalid domain selected. Please go back and select a valid domain.');
+                window.location.href = 'index.html';
+            }
+        }
+    
+        // Function to submit the selected field and proceed
+        function submitAssessment1() {
+            const form = document.getElementById('assessment1Form');
+            const selectedOption = form.querySelector('input[name="option"]:checked');
+    
+            if (selectedOption) {
+                // Save the user's selected field in userData
+                userData.assessment1 = selectedOption.value;
+    
+                // Check if the user selected "None"
+                if (userData.assessment1 === 'None') {
+                    alert("SORRY, WE DON'T HAVE A JOB RECOMMENDATION FOR YOU.");
+                    window.location.href = 'thankyou.html'; // Redirect to thank you page
+                } else {
+                    // Save the selected field in localStorage
+                    localStorage.setItem('selectedField', userData.assessment1);
+                    window.location.href = '02.html'; // Proceed to the next assessment page
+                }
+            } else {
+                // If no option is selected, prompt the user
+                alert('Please select a field to proceed.');
+            }
+        }
+    
+        // Load the question and options when the page loads
+        window.onload = loadAssessment1;
+    </script>
+    
+</body>
+</html>

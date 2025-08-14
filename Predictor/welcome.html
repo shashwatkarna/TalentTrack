@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Track - Job Recommendation System</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            background: rgba(0, 0, 0, 0.975);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            color: #81c5de;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h1 {
+            margin-left: 20px;
+            font-size: 24px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+        }
+
+        .navbar ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        .navbar ul li a {
+            color: #81c5de;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #f0a500;
+        }
+
+        /* Front page styling */
+        .front-page {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            padding: 20px;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        .front-page .content {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        .front-page h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #81c5de;
+        }
+
+        .front-page p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #ebe0e0;
+        }
+
+        .front-page button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        .front-page button:hover {
+            background-color: #1c8686;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: #81c5de;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Talent Track</h1>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <div class="front-page">
+        <div class="content">
+            <h1>Welcome to Talent Track!</h1>
+            <p>A job recommendation system to help you find your ideal career path. We offer tailored recommendations for jobs in the IT sector, public sector, and other domains based on your skills and preferences.</p>
+            <p><strong>About Us:</strong> Developed by Manjul, Shashwat, and Jyoti.</p>
+            <button onclick="start()">Start</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Talent Track. All rights reserved.</p>
+    </footer>
+    
+    
+    <script>
+        function start() {
+            window.location.href = '00.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Selection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="domain-selection-page">
+        <h1>Select a Domain</h1>
+        <form id="domainForm">
+            <label>
+                <input type="radio" name="domain" value="it"> IT Sector
+            </label><br>
+            <label>
+                <input type="radio" name="domain" value="public"> Public Sector
+            </label><br>
+            <label>
+                <input type="radio" name="domain" value="others"> Others
+            </label><br><br>
+            <button type="button" onclick="submitDomain()">Next</button>
+        </form>
+    </div>
+    <script>
+        function submitDomain() {
+            const form = document.getElementById('domainForm');
+            const selectedDomain = form.querySelector('input[name="domain"]:checked');
+            if (selectedDomain) {
+                userData.domain = selectedDomain.value;
+                window.location.href = 'a1.html';
+            } else {
+                alert('Please select a domain to proceed.');
+            }
+        }
+    </script>
+</body>
+</html>

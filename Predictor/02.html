@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment 2</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and background */
+        body {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* Assessment page styling */
+        .assessment-page {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .assessment-page h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Questions container */
+        #questionsContainer {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        /* Question block */
+        .question-block {
+            margin-bottom: 20px;
+        }
+
+        .question-block label {
+            font-size: 18px;
+            color: #ecf0f1;
+        }
+
+        .question-block input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        /* Button styling */
+        #nextButton {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 165, 0, 0.3);
+        }
+
+        #nextButton:hover {
+            background-color: #1c8686;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(240, 165, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            .assessment-page {
+                padding: 20px;
+            }
+
+            .assessment-page h1 {
+                font-size: 28px;
+            }
+
+            .question-block label {
+                font-size: 16px;
+            }
+
+            #nextButton {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-page">
+        <h1>Assessment 2: In-depth Questions</h1>
+        <div id="questionsContainer"></div>
+        <button type="button" id="nextButton" onclick="submitAssessment2()">Next</button>
+    </div>
+
+    <script>
+        // In-depth questions for each domain and field with multiple-choice options
+        const domainQuestions = {
+            it: {
+                "networking": [
+                    {
+                        question: "Explain the OSI model.",
+                        options: [
+                            "A 7-layer model used in networking",
+                            "A 5-layer model used in cybersecurity",
+                            "A protocol for wireless communication",
+                            "A database model for backend architecture"
+                        ]
+                },
+               {
+                    question: "What is the difference between TCP and UDP?",
+                    options: [
+                        "TCP is connection-oriented, UDP is connectionless",
+                        "TCP is faster than UDP",
+                        "UDP is connection-oriented, TCP is connectionless",
+                        "Both are used for securing networks"
+                    ]
+                },
+                {
+                    question: "How would you secure a network?",
+                    options: [
+                        "Using firewalls and encryption",
+                        "By setting up a VPN",
+                        "Using only HTTP protocols",
+                        "Disabling network security"
+                    ]
+                }
+                ],
+                "aiml": [
+                {
+                    question: "What are neural networks?",
+                    options: [
+                        "A type of database system",
+                        "A network of interconnected computers",
+                        "A model that mimics the human brain",
+                        "A programming language for AI"
+                    ]
+                },
+                {
+                    question: "Explain supervised learning.",
+                    options: [
+                        "Learning with labeled data",
+                        "Learning without data",
+                        "Learning from past mistakes",
+                        "Self-taught learning"
+                    ]
+                },
+                {
+                    question: "How would you evaluate an AI model?",
+                    options: [
+                        "By using accuracy and loss metrics",
+                        "By observing model behavior",
+                        "By checking if the model runs fast",
+                        "By comparing it with a human expert"
+                    ]
+                }
+                ],
+                "cyber-security": [
+                {
+                    question: "What is a firewall?",
+                    options: [
+                        "A type of encryption",
+                        "A security system that monitors and controls incoming and outgoing network traffic",
+                        "A malicious software",
+                        "A security protocol for websites"
+                    ]
+                },
+                {
+                    question: "Explain encryption.",
+                    options: [
+                        "A method of encoding data to prevent unauthorized access",
+                        "A process to delete data permanently",
+                        "A form of network routing",
+                        "A type of cybersecurity certification"
+                    ]
+                },
+                {
+                    question: "How do you detect a phishing attack?",
+                    options: [
+                        "By analyzing suspicious emails or links",
+                        "By encrypting network traffic",
+                        "By using cloud storage solutions",
+                        "By disabling firewalls"
+                    ]
+                }
+                ],
+                "frontend-developer": [
+                {
+                    question: "What is HTML?",
+                    options: [
+                        "A markup language used to structure web content",
+                        "A programming language for mobile apps",
+                        "A database management system",
+                        "A CSS framework"
+                    ]
+                },
+                {
+                    question: "How do you optimize a website's performance?",
+                    options: [
+                        "By reducing image sizes and minifying code",
+                        "By using heavier scripts",
+                        "By disabling caching",
+                        "By increasing server load"
+                    ]
+                },
+                {
+                    question: "What is CSS Flexbox?",
+                    options: [
+                        "A layout model for aligning items in rows or columns",
+                        "A way to structure databases",
+                        "A protocol for wireless communication",
+                        "A JavaScript framework"
+                    ]
+                }
+                ],
+                "backend-developer": [
+                {
+                    question: "What is REST API?",
+                    options: [
+                        "A set of rules for building scalable web services",
+                        "A frontend framework for building user interfaces",
+                        "A network security protocol",
+                        "A database management system"
+                    ]
+                },
+                {
+                    question: "Explain database normalization.",
+                    options: [
+                        "Organizing database structure to reduce redundancy",
+                        "Combining multiple databases into one",
+                        "Encrypting a database for security",
+                        "Using a database for load balancing"
+                    ]
+                },
+                {
+                    question: "What is microservices architecture?",
+                    options: [
+                        "An architecture style where applications are built as a collection of small services",
+                        "A monolithic structure where all services are combined",
+                        "A way to build desktop applications",
+                        "A security model for web applications"
+                    ]
+                }
+                ]
+                },
+                public: {
+                "civil-services": [
+                {
+                    question: "What is the role of IAS officers?",
+                    options: [
+                        "Implementing government policies and managing public administration",
+                        "Providing legal advice to citizens",
+                        "Managing the country's armed forces",
+                        "Overseeing private sector development"
+                    ]
+                },
+                {
+                    question: "Explain the governance system of India.",
+                    options: [
+                        "India follows a parliamentary democracy",
+                        "India is a monarchy",
+                        "India is a dictatorship",
+                        "India uses direct democracy"
+                    ]
+                },
+                {
+                    question: "What are the public policies in healthcare?",
+                    options: [
+                        "Government plans for providing healthcare services",
+                        "Policies for private hospitals",
+                        "Tax regulations for medical services",
+                        "Policies for military hospitals only"
+                    ]
+                }
+                ],
+                "defense": [
+                {
+                    question: "What is the structure of the Indian Armed Forces?",
+                    options: [
+                        "Comprises the Army, Navy, and Air Force",
+                        "Only consists of the Army",
+                        "Includes the Police Force",
+                        "Is managed by private contractors"
+                    ]
+                },
+                {
+                    question: "Explain the importance of military diplomacy.",
+                    options: [
+                        "Helps in strengthening international security relations",
+                        "Is used only for internal conflicts",
+                        "Has no role in international relations",
+                        "Is only important during war times"
+                    ]
+                },
+                {
+                    question: "What are the ranks in the Indian Army?",
+                    options: [
+                        "General, Lieutenant, Major, Captain, and Sepoy",
+                        "Pilot, Lieutenant, and Soldier",
+                        "Commander, General, and Soldier",
+                        "Admiral, Marshal, and Constable"
+                    ]
+                }
+                ],
+                "education": [
+                {
+                    question: "Explain the New Education Policy.",
+                    options: [
+                        "A policy that aims to overhaul the Indian education system",
+                        "A policy to promote foreign universities in India",
+                        "A policy to privatize schools",
+                        "A policy for military training in schools"
+                    ]
+                },
+                {
+                    question: "What is the role of a teacher in primary education?",
+                    options: [
+                        "Guiding young students in foundational learning",
+                        "Managing school finances",
+                        "Providing medical services to students",
+                        "Creating government policies"
+                    ]
+                },
+                {
+                    question: "What are the challenges in rural education?",
+                    options: [
+                        "Lack of infrastructure, qualified teachers, and access to technology",
+                        "Excessive use of technology",
+                        "Overabundance of teachers",
+                        "Too much investment in rural schools"
+                    ]
+                }
+                ],
+                "healthcare": [
+                {
+                    question: "What are primary healthcare services?",
+                    options: [
+                        "Basic health services such as vaccination, maternal care, and treatment of common diseases",
+                        "Advanced surgical procedures",
+                        "Only mental health services",
+                        "Health insurance for the elderly"
+                    ]
+                },
+                {
+                    question: "Explain the role of healthcare professionals.",
+                    options: [
+                        "Provide medical care, diagnose, treat, and manage patients' health",
+                        "Manage financial records of hospitals",
+                        "Create fitness programs for athletes",
+                        "Teach medical courses at universities"
+                    ]
+                },
+                {
+                    question: "What are the biggest health challenges in India?",
+                    options: [
+                        "Non-communicable diseases, malnutrition, and maternal mortality",
+                        "Only infectious diseases",
+                        "Lack of hospitals",
+                        "Lack of qualified healthcare professionals"
+                    ]
+                }
+                ],
+                "infrastructure": [
+                {
+                    question: "What is urban planning?",
+                    options: [
+                        "Designing and regulating land use in urban areas",
+                        "Building only rural roads",
+                        "Managing defense systems in cities",
+                        "Creating financial plans for cities"
+                    ]
+                },
+                {
+                    question: "Explain the Smart City mission.",
+                    options: [
+                        "An initiative to promote sustainable and inclusive urban development",
+                        "A policy to build more highways",
+                        "A plan to increase private housing",
+                        "A mission to replace public transport with private vehicles"
+                    ]
+                },
+                {
+                    question: "What are public-private partnerships in infrastructure?",
+                    options: [
+                        "Collaborations between government and private companies for infrastructure projects",
+                        "Exclusive ownership of infrastructure by the private sector",
+                        "Public-funded infrastructure with no private involvement",
+                        "Only government-run infrastructure"
+                    ]
+                }
+                ]
+                },
+                others: {
+                "marketing": [
+                {
+                    question: "What are the 4 Ps of marketing?",
+                    options: [
+                        "Product, Price, Place, Promotion",
+                        "Plan, Process, People, Promotion",
+                        "Profit, Price, Plan, Product",
+                        "Purpose, People, Place, Price"
+                    ]
+                },
+                {
+                    question: "Explain market segmentation.",
+                    options: [
+                        "Dividing a market into distinct groups of consumers",
+                        "Targeting all consumers equally",
+                        "Focusing only on product development",
+                        "Analyzing sales reports"
+                    ]
+                },
+                {
+                    question: "What is digital marketing?",
+                    options: [
+                        "Marketing products or services using digital channels like social media and email",
+                        "Using paper-based marketing methods",
+                        "Only advertising on television",
+                        "Focusing on in-person sales techniques"
+                    ]
+                },
+                {
+                    question: "What is the purpose of branding?",
+                    options: [
+                        "To create a unique identity for a product or company",
+                        "To reduce production costs",
+                        "To increase legal issues",
+                        "To lower customer expectations"
+                    ]
+                },
+                {
+                    question: "What is a SWOT analysis?",
+                    options: [
+                        "A strategic planning tool to identify strengths, weaknesses, opportunities, and threats",
+                        "A method to analyze financial statements",
+                        "A way to segment customers",
+                        "A process to improve production efficiency"
+                    ]
+                }
+                ],
+                "finance": [
+                {
+                    question: "What is financial risk management?",
+                    options: [
+                        "Identifying, analyzing, and mitigating financial risks",
+                        "Managing stock portfolios",
+                        "Selling insurance policies",
+                        "Promoting financial products"
+                    ]
+                },
+                {
+                    question: "Explain equity and debt financing.",
+                    options: [
+                        "Equity financing involves selling shares, while debt financing involves borrowing money",
+                        "Equity financing is only for startups",
+                        "Debt financing has no cost associated with it",
+                        "Both are the same"
+                    ]
+                },
+                {
+                    question: "What is the role of an auditor?",
+                    options: [
+                        "To examine financial records and ensure accuracy",
+                        "To manage investments",
+                        "To sell financial products",
+                        "To create business plans"
+                    ]
+                },
+                {
+                    question: "What is a budget?",
+                    options: [
+                        "A plan for managing income and expenses",
+                        "A report on past financial performance",
+                        "A type of financial investment",
+                        "A method to reduce costs"
+                    ]
+                },
+                                    {
+                                        question: "What is the difference between profit and revenue?",
+                                        options: [
+                                            "Profit is what remains after all expenses are deducted from revenue",
+                                            "Profit and revenue are the same",
+                                            "Revenue is calculated before expenses",
+                                            "Profit refers to total sales"
+                                        ]
+                                    }
+                                ],
+                "sales": [
+                    {
+                        question: "What are sales funnels?",
+                        options: [
+                            "A model that illustrates the journey of potential customers",
+                            "Only a marketing strategy",
+                            "A method for creating leads",
+                            "A type of customer relationship management"
+                        ]
+                    },
+                    {
+                        question: "Explain sales forecasting.",
+                        options: [
+                            "Predicting future sales based on historical data",
+                            "Counting current sales",
+                            "Only guessing future sales",
+                            "Estimating costs for products"
+                        ]
+                    }
+                ],
+                "human-resources": [
+                    {
+                        question: "What is employee engagement?",
+                        options: [
+                            "The emotional commitment of an employee to the organization",
+                            "Only the salary provided to employees",
+                            "The number of hours worked by employees",
+                            "The employee turnover rate"
+                        ]
+                    },
+                    {
+                        question: "Explain HR metrics.",
+                        options: [
+                            "Data used to measure the effectiveness of HR practices",
+                            "Only related to payroll",
+                            "Tools for training employees",
+                            "Techniques for employee recruitment"
+                        ]
+                    }
+                ],
+                "legal": [
+                    {
+                        question: "What is corporate law?",
+                        options: [
+                            "The body of law governing the rights, relations, and conduct of companies",
+                            "Laws for individuals only",
+                            "Regulations for the military",
+                            "Rules for healthcare providers"
+                        ]
+                    },
+                    {
+                        question: "Explain intellectual property rights.",
+                        options: [
+                            "Legal rights that protect creations of the mind",
+                            "Rights for physical properties only",
+                            "Only related to patents",
+                            "Laws for real estate"
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Retrieve user data (domain and selected field) from localStorage
+        const userData = {
+            domain: localStorage.getItem('selectedDomain'),
+            assessment1: localStorage.getItem('selectedField')
+        };
+
+        // Load the in-depth questions based on selected field and domain
+        function loadAssessment2() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = ''; // Clear the container
+            // Check if domain and field are available in localStorage
+            if (!userData.domain || !userData.assessment1) {
+                container.innerHTML = "<p>Error: Domain or field not selected properly.</p>";
+                document.getElementById('nextButton').disabled = true; // Disable the next button
+                console.error("Domain or field missing in localStorage.");
+                return;
+            }
+
+            const field = userData.assessment1.trim().toLowerCase(); // Normalize field
+            const domain = userData.domain.trim().toLowerCase();
+
+            // Check if field and domain match correctly
+            if (domainQuestions[domain] && domainQuestions[domain][field]) {
+                const questions = domainQuestions[domain][field];
+                // Display each question with multiple-choice options
+                questions.forEach((q, index) => {
+                    let optionsHTML = '';
+
+                    q.options.forEach((option, optionIndex) => {
+                        optionsHTML += `
+                            <input type="radio" id="answer${index}_${optionIndex}" name="answer${index}" value="${option}">
+                            <label for="answer${index}_${optionIndex}">${option}</label><br>
+                        `;
+                    });
+
+                    container.innerHTML += `
+                        <div class="question-block">
+                            <label>${index + 1}. ${q.question}</label><br>
+                            ${optionsHTML}<br>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = "<p>No questions available for the selected field.</p>";
+                document.getElementById('nextButton').disabled = true; // Disable the next button
+                console.warn('No questions found for the given domain or field.');
+            }
+        }
+
+        // Function to submit answers and validate
+        function submitAssessment2() {
+            const field = userData.assessment1.trim().toLowerCase();
+            const domain = userData.domain.trim().toLowerCase();
+            const answers = [];
+
+            if (domainQuestions[domain] && domainQuestions[domain][field]) {
+                const questions = domainQuestions[domain][field];
+
+                questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`input[name="answer${index}"]:checked`);
+                    if (selectedOption) {
+                        answers.push(selectedOption.value);
+                    }
+                });
+
+                if (answers.length === questions.length) {
+                    userData.assessment2 = answers; // Store the answers in userData
+                    localStorage.setItem('assessment2Answers', JSON.stringify(answers)); // Save answers in localStorage
+                    window.location.href = '03.html'; // Navigate to next assessment
+                } else {
+                    alert('Please answer all questions.');
+                }
+            }
+        }
+
+        window.onload = loadAssessment2;
+    </script>
+</body>
+</html>

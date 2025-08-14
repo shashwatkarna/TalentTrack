@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Track - Job Recommendation System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add styles here if needed */
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Front Page -->
+        <div class="front-page" id="front-page">
+            <h1>Talent Track</h1>
+            <p>Welcome to Talent Track - a job recommendation system to help you find your ideal career path. We offer tailored recommendations for jobs in the IT sector, public sector, and other domains based on your skills and preferences.</p>
+            <p><strong>About Us:</strong> Developed by Manjul, Shashwat, and Jyoti.</p>
+            <img src="background.jpg" alt="Background" class="background-image">
+            <button onclick="start()">Start</button>
+        </div>
+
+        <!-- Domain Selection -->
+        <div class="domain-selection-page" id="domain-selection-page" style="display:none;">
+            <h1>Select a Domain</h1>
+            <form id="domainForm">
+                <label>
+                    <input type="radio" name="domain" value="it"> IT Sector
+                </label><br>
+                <label>
+                    <input type="radio" name="domain" value="public"> Public Sector
+                </label><br>
+                <label>
+                    <input type="radio" name="domain" value="others"> Others
+                </label><br><br>
+                <button type="button" onclick="submitDomain()">Next</button>
+            </form>
+        </div>
+
+        <!-- Assessment 1 -->
+        <div class="assessment-page" id="assessment1-page" style="display:none;">
+            <h1>Assessment 1: Choose Your Field</h1>
+            <form id="assessment1Form"></form>
+            <button type="button" onclick="submitAssessment1()">Next</button>
+        </div>
+
+        <!-- Assessment 2 -->
+        <div class="assessment-page" id="assessment2-page" style="display:none;">
+            <h1>Assessment 2: In-depth Questions</h1>
+            <div id="questionsContainer"></div>
+            <button type="button" onclick="submitAssessment2()">Next</button>
+        </div>
+
+        <!-- Assessment 3 -->
+        <div class="assessment-page" id="assessment3-page" style="display:none;">
+            <h1>Assessment 3: Final Questions</h1>
+            <div id="questionsContainerFinal"></div>
+            <button type="button" onclick="submitAssessment3()">Submit</button>
+        </div>
+
+        <!-- Job Recommendation -->
+        <div class="recommendation-page" id="recommendation-page" style="display:none;">
+            <h1>Your Job Recommendations</h1>
+            <div id="recommendationContainer"></div>
+            <button onclick="finish()">Finish</button>
+        </div>
+
+        <!-- Thank You Page -->
+        <div class="thank-you-page" id="thank-you-page" style="display:none;">
+            <h1>Thank You!</h1>
+            <p>Sorry for any kind of inconvenience. We are currently in the developing phase and cannot guarantee 100% accuracy in our recommendations.</p>
+        </div>
+    </div>
+
+    <script>
+        const userData = {}; // To store user data
+
+        function start() {
+            document.getElementById('front-page').style.display = 'none';
+            document.getElementById('domain-selection-page').style.display = 'block';
+        }
+
+        function submitDomain() {
+            const form = document.getElementById('domainForm');
+            const selectedDomain = form.querySelector('input[name="domain"]:checked');
+            if (selectedDomain) {
+                userData.domain = selectedDomain.value;
+                document.getElementById('domain-selection-page').style.display = 'none';
+                loadAssessment1();
+            } else {
+                alert('Please select a domain to proceed.');
+            }
+        }
+
+        function loadAssessment1() {
+            const form = document.getElementById('assessment1Form');
+            const questions = {
+                it: [
+                    "Networking",
+                    "AI & ML",
+                    "Cyber Security",
+                    "Frontend Developer",
+                    "Backend Developer",
+                    "None"
+                ],
+                public: [
+                    "Civil Services",
+                    "Defense",
+                    "Education",
+                    "Healthcare",
+                    "Infrastructure",
+                    "None"
+                ],
+                others: [
+                    "Marketing",
+                    "Finance",
+                    "Sales",
+                    "Human Resources",
+                    "Legal",
+                    "None"
+                ]
+            };
+
+            questions[userData.domain].forEach((option) => {
+                form.innerHTML += `<label><input type="radio" name="option" value="${option}">${option}</label><br>`;
+            });
+
+            document.getElementById('assessment1-page').style.display = 'block';
+        }
+
+        function submitAssessment1() {
+            const form = document.getElementById('assessment1Form');
+            const selectedOption = form.querySelector('input[name="option"]:checked');
+            
+            if (selectedOption) {
+                userData.assessment1 = selectedOption.value;
+                
+                if (userData.assessment1 === 'None') {
+                    alert("SORRY, WE DON'T HAVE A JOB RECOMMENDATION FOR YOU.");
+                    document.getElementById('assessment1-page').style.display = 'none';
+                    document.getElementById('thank-you-page').style.display = 'block';
+                } else {
+                    document.getElementById('assessment1-page').style.display = 'none';
+                    loadAssessment2();
+                }
+            } else {
+                alert('Please select an option to proceed.');
+            }
+        }
+
+        function loadAssessment2() {
+            const field = userData.assessment1.toLowerCase().replace(' ', '-');
+            const domain = userData.domain;
+            const questions = {
+                it: {
+                    networking: [
+                        "Explain the OSI model.",
+                        "What is the difference between TCP and UDP?",
+                        "How would you secure a network?"
+                    ],
+                    ai-ml: [
+                        "What are neural networks?",
+                        "Explain supervised learning.",
+                        "How would you evaluate an AI model?"
+                    ],
+                    cyber-security: [
+                        "What is a firewall?",
+                        "Explain encryption.",
+                        "How do you detect a phishing attack?"
+                    ],
+                    frontend-developer: [
+                        "What is HTML?",
+                        "How do you optimize a website's performance?",
+                        "What is CSS Flexbox?"
+                    ],
+                    backend-developer: [
+                        "What is REST API?",
+                        "Explain database normalization.",
+                        "What is microservices architecture?"
+                    ]
+                },
+                public: {
+                    civil-services: [
+                        "What is the role of IAS officers?",
+                        "Explain the governance system of India.",
+                        "What are the public policies in healthcare?"
+                    ],
+                    defense: [
+                        "What is the structure of the Indian Armed Forces?",
+                        "Explain the importance of military diplomacy.",
+                        "What are the ranks in the Indian Army?"
+                    ],
+                    education: [
+                        "Explain the New Education Policy.",
+                        "What is the role of a teacher in primary education?",
+                        "What are the challenges in rural education?"
+                    ],
+                    healthcare: [
+                        "What are primary healthcare services?",
+                        "Explain the role of healthcare professionals.",
+                        "What are the biggest health challenges in India?"
+                    ],
+                    infrastructure: [
+                        "What is urban planning?",
+                        "Explain the Smart City mission.",
+                        "What are public-private partnerships in infrastructure?"
+                    ]
+                },
+                others: {
+                    marketing: [
+                        "What are the 4 Ps of marketing?",
+                        "Explain consumer behavior.",
+                        "What is digital marketing?"
+                    ],
+                    finance: [
+                        "What is financial risk management?",
+                        "Explain equity and debt financing.",
+                        "What is the role of an auditor?"
+                    ],
+                    sales: [
+                        "What are sales funnels?",
+                        "Explain sales forecasting.",
+                        "What are CRM tools?"
+                    ],
+                    human-resources: [
+                        "What is employee engagement?",
+                        "Explain HR metrics.",
+                        "What is talent acquisition?"
+                    ],
+                    legal: [
+                        "What is corporate law?",
+                        "Explain intellectual property rights.",
+                        "What are labor laws?"
+                    ]
+                }
+            };
+
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            const questionList = questions[domain][field];
+
+            questionList.forEach((question, index) => {
+                container.innerHTML += `<label>${index + 1}. ${question}</label><br><input type="text" id="answer${index}"><br><br>`;
+            });
+
+            document.getElementById('assessment2-page').style.display = 'block';
+        }
+
+        function submitAssessment2() {
+            const field = userData.assessment1.toLowerCase().replace(' ', '-');
+            const domain = userData.domain;
+            const answers = [];
+            const questionList = {
+                it: {
+                    networking: [
+                        "Explain the OSI model.",
+                        "What is the difference between TCP and UDP?",
+                        "How would you secure a network?"
+                    ],
+                    ai-ml: [
+                        "What are neural networks?",
+                        "Explain supervised learning.",
+                        "How would you evaluate an AI model?"
+                    ],
+                    cyber-security: [
+                        "What is a firewall?",
+                        "Explain encryption.",
+                        "How do you detect a phishing attack?"
+                    ],
+                    frontend-developer: [
+                        "What is HTML?",
+                        "How do you optimize a website's performance?",
+                        "What is CSS Flexbox?"
+                    ],
+                    backend-developer: [
+                        "What is REST API?",
+                        "Explain database normalization.",
+                        "What is microservices architecture?"
+                    ]
+                },
+                public: {
+                    civil-services: [
+                        "What is the role of IAS officers?",
+                        "Explain the governance system of India.",
+                        "What are the public policies in healthcare?"
+                    ],
+                    defense: [
+                        "What is the structure of the Indian Armed Forces?",
+                        "Explain the importance of military diplomacy.",
+                        "What are the ranks in the Indian Army?"
+                    ],
+                    education: [
+                        "Explain the New Education Policy.",
+                        "What is the role of a teacher in primary education?",
+                        "What are the challenges in rural education?"
+                    ],
+                    healthcare: [
+                        "What are primary healthcare services?",
+                        "Explain the role of healthcare professionals.",
+                        "What are the biggest health challenges in India?"
+                    ],
+                    infrastructure: [
+                        "What is urban planning?",
+                        "Explain the Smart City mission.",
+                        "What are public-private partnerships in infrastructure?"
+                    ]
+                },
+                others: {
+                    marketing: [
+                        "What are the 4 Ps of marketing?",
+                        "Explain consumer behavior.",
+                        "What is digital marketing?"
+                    ],
+                    finance: [
+                        "What is financial risk management?",
+                        "Explain equity and debt financing.",
+                        "What is the role of an auditor?"
+                    ],
+                    sales: [
+                        "What are sales funnels?",
+                        "Explain sales forecasting.",
+                        "What are CRM tools?"
+                    ],
+                    "human-resources": [
+                        "What is employee engagement?",
+                        "Explain HR metrics.",
+                        "What is talent acquisition?"
+                    ],
+                    legal: [
+                        "What is corporate law?",
+                        "Explain intellectual property rights.",
+                        "What are labor laws?"
+                    ]
+                }
+            };
+
+            questionList[domain][field].forEach((question, index) => {
+                const answer = document.getElementById(`answer${index}`).value;
+                if (answer) {
+                    answers.push(answer);
+                }
+            });
+
+            if (answers.length === questionList[domain][field].length) {
+                userData.assessment2 = answers;
+                document.getElementById('assessment2-page').style.display = 'none';
+                loadAssessment3();
+            } else {
+                alert('Please answer all the questions.');
+            }
+        }
+
+        function loadAssessment3() {
+            const field = userData.assessment1.toLowerCase().replace(' ', '-');
+            const domain = userData.domain;
+            const finalQuestions = {
+                it: {
+                    networking: [
+                        "What is subnetting?",
+                        "How do you configure a VLAN?",
+                        "Explain the difference between public and private IP.",
+                        "What are network topologies?",
+                        "How do you configure a firewall?"
+                    ],
+                    ai-ml: [
+                        "Explain reinforcement learning.",
+                        "What is gradient descent?",
+                        "What is the use of confusion matrix?",
+                        "Explain NLP.",
+                        "What is overfitting in AI models?"
+                    ],
+                    cyber-security: [
+                        "What is the difference between a virus and a worm?",
+                        "Explain the concept of encryption.",
+                        "What are the types of cyber attacks?",
+                        "How do you secure a wireless network?",
+                        "What is a firewall and how does it work?"
+                    ],
+                    frontend-developer: [
+                        "What is the DOM?",
+                        "Explain the box model in CSS.",
+                        "What are JavaScript closures?",
+                        "How do you optimize a website for performance?",
+                        "What is responsive web design?"
+                    ],
+                    backend-developer: [
+                        "What is REST API and how does it work?",
+                        "Explain the concept of middleware in backend development.",
+                        "What is database indexing?",
+                        "What are microservices?",
+                        "How do you manage session in backend development?"
+                    ]
+                },
+                public: {
+                    civil-services: [
+                        "What are the roles and responsibilities of civil servants?",
+                        "Explain the concept of public administration.",
+                        "What are the key challenges faced by civil services?",
+                        "What is e-governance?",
+                        "How do civil services impact policy-making?"
+                    ],
+                    defense: [
+                        "What are the branches of the defense forces?",
+                        "Explain the importance of cybersecurity in defense.",
+                        "What are the various ranks in the defense sector?",
+                        "What is defense diplomacy?",
+                        "How does modern technology influence defense strategies?"
+                    ],
+                    education: [
+                        "What are the challenges in modern education systems?",
+                        "Explain the role of technology in education.",
+                        "What is inclusive education?",
+                        "How do you improve student engagement?",
+                        "What is the role of teachers in curriculum development?"
+                    ],
+                    healthcare: [
+                        "What are the primary challenges in healthcare management?",
+                        "Explain the role of technology in modern healthcare.",
+                        "What are the different types of healthcare systems?",
+                        "How do you improve patient care in hospitals?",
+                        "What are the ethics involved in healthcare?"
+                    ],
+                    infrastructure: [
+                        "What are the key components of urban infrastructure?",
+                        "How does infrastructure development impact the economy?",
+                        "Explain the importance of sustainable infrastructure.",
+                        "What are the challenges in infrastructure project management?",
+                        "What is the role of technology in infrastructure development?"
+                    ]
+                },
+                others: {
+                    marketing: [
+                        "What are the key elements of a marketing strategy?",
+                        "How do you conduct market research?",
+                        "What is the role of social media in marketing?",
+                        "Explain the concept of branding.",
+                        "What are the 4 Ps of marketing?"
+                    ],
+                    finance: [
+                        "What is the difference between assets and liabilities?",
+                        "Explain the concept of compound interest.",
+                        "What are the key financial statements in a business?",
+                        "What is the role of financial management?",
+                        "What is the stock market and how does it work?"
+                    ],
+                    sales: [
+                        "What are the steps in the sales process?",
+                        "How do you handle customer objections?",
+                        "What is the importance of customer relationship management (CRM)?",
+                        "Explain the concept of a sales funnel.",
+                        "What is the role of a sales manager?"
+                    ],
+                    human-resources: [
+                        "What is the role of HR in an organization?",
+                        "Explain the recruitment process.",
+                        "What are the key functions of human resource management?",
+                        "How do you handle employee grievances?",
+                        "What is performance management?"
+                    ],
+                    legal: [
+                        "What is the difference between civil and criminal law?",
+                        "Explain the role of a lawyer in the justice system.",
+                        "What are the different types of contracts?",
+                        "How do you draft legal documents?",
+                        "What is the importance of legal compliance in business?"
+                    ]
+                }
+            };
+
+            const container = document.getElementById('questionsContainerFinal');
+            container.innerHTML = '';
+            const finalQuestionList = finalQuestions[domain][field];
+
+            finalQuestionList.forEach((question, index) => {
+                container.innerHTML += `<label>${index + 1}. ${question}</label><br><input type="text" id="answerFinal${index}"><br><br>`;
+            });
+
+            document.getElementById('assessment3-page').style.display = 'block';
+        }
+
+        function submitAssessment3() {
+            const field = userData.assessment1.toLowerCase().replace(' ', '-');
+            const domain = userData.domain;
+            const answers = [];
+            const finalQuestionList = {
+                it: {
+                    networking: [
+                        "What is subnetting?",
+                        "How do you configure a VLAN?",
+                        "Explain the difference between public and private IP.",
+                        "What are network topologies?",
+                        "How do you configure a firewall?"
+                    ],
+                    ai-ml: [
+                        "Explain reinforcement learning.",
+                        "What is gradient descent?",
+                        "What is the use of confusion matrix?",
+                        "Explain NLP.",
+                        "What is overfitting in AI models?"
+                    ],
+                    cyber-security: [
+                        "What is the difference between a virus and a worm?",
+                        "Explain the concept of encryption.",
+                        "What are the types of cyber attacks?",
+                        "How do you secure a wireless network?",
+                        "What is a firewall and how does it work?"
+                    ],
+                    frontend-developer: [
+                        "What is the DOM?",
+                        "Explain the box model in CSS.",
+                        "What are JavaScript closures?",
+                        "How do you optimize a website for performance?",
+                        "What is responsive web design?"
+                    ],
+                    backend-developer: [
+                        "What is REST API and how does it work?",
+                        "Explain the concept of middleware in backend development.",
+                        "What is database indexing?",
+                        "What are microservices?",
+                        "How do you manage session in backend development?"
+                    ]
+                },
+                public: {
+                    civil-services: [
+                        "What are the roles and responsibilities of civil servants?",
+                        "Explain the concept of public administration.",
+                        "What are the key challenges faced by civil services?",
+                        "What is e-governance?",
+                        "How do civil services impact policy-making?"
+                    ],
+                    defense: [
+                        "What are the branches of the defense forces?",
+                        "Explain the importance of cybersecurity in defense.",
+                        "What are the various ranks in the defense sector?",
+                        "What is defense diplomacy?",
+                        "How does modern technology influence defense strategies?"
+                    ],
+                    education: [
+                        "What are the challenges in modern education systems?",
+                        "Explain the role of technology in education.",
+                        "What is inclusive education?",
+                        "How do you improve student engagement?",
+                        "What is the role of teachers in curriculum development?"
+                    ],
+                    healthcare: [
+                        "What are the primary challenges in healthcare management?",
+                        "Explain the role of technology in modern healthcare.",
+                        "What are the different types of healthcare systems?",
+                        "How do you improve patient care in hospitals?",
+                        "What are the ethics involved in healthcare?"
+                    ],
+                    infrastructure: [
+                        "What are the key components of urban infrastructure?",
+                        "How does infrastructure development impact the economy?",
+                        "Explain the importance of sustainable infrastructure.",
+                        "What are the challenges in infrastructure project management?",
+                        "What is the role of technology in infrastructure development?"
+                    ]
+                },
+                others: {
+                    marketing: [
+                        "What are the key elements of a marketing strategy?",
+                        "How do you conduct market research?",
+                        "What is the role of social media in marketing?",
+                        "Explain the concept of branding.",
+                        "What are the 4 Ps of marketing?"
+                    ],
+                    finance: [
+                        "What is the difference between assets and liabilities?",
+                        "Explain the concept of compound interest.",
+                        "What are the key financial statements in a business?",
+                        "What is the role of financial management?",
+                        "What is the stock market and how does it work?"
+                    ],
+                    sales: [
+                        "What are the steps in the sales process?",
+                        "How do you handle customer objections?",
+                        "What is the importance of customer relationship management (CRM)?",
+                        "Explain the concept of a sales funnel.",
+                        "What is the role of a sales manager?"
+                    ],
+                    human-resources: [
+                        "What is the role of HR in an organization?",
+                        "Explain the recruitment process.",
+                        "What are the key functions of human resource management?",
+                        "How do you handle employee grievances?",
+                        "What is performance management?"
+                    ],
+                    legal: [
+                        "What is the difference between civil and criminal law?",
+                        "Explain the role of a lawyer in the justice system.",
+                        "What are the different types of contracts?",
+                        "How do you draft legal documents?",
+                        "What is the importance of legal compliance in business?"
+                    ]
+                }
+            };
+
+            finalQuestionList[domain][field].forEach((question, index) => {
+                const answer = document.getElementById(`answerFinal${index}`).value;
+                if (answer) {
+                    answers.push(answer);
+                }
+            });
+
+            if (answers.length === finalQuestionList[domain][field].length) {
+                userData.assessment3 = answers;
+                document.getElementById('assessment3-page').style.display = 'none';
+                recommendJobs();
+            } else {
+                alert('Please answer all the questions.');
+            }
+        }
+
+        function recommendJobs() {
+            const recommendations = {
+                it: {
+                    networking: ["Network Engineer", "System Administrator", "IT Support"],
+                    ai-ml: ["Data Scientist", "Machine Learning Engineer", "AI Researcher"],
+                    cyber-security: ["Cyber Security Analyst", "Information Security Officer", "Penetration Tester"],
+                    frontend-developer: ["Frontend Developer", "UI/UX Designer", "Web Developer"],
+                    backend-developer: ["Backend Developer", "Database Administrator", "Cloud Engineer"]
+                },
+                public: {
+                    civil-services: ["IAS Officer", "IPS Officer", "IFS Officer"],
+                    defense: ["Army Officer", "Navy Officer", "Air Force Officer"],
+                    education: ["Teacher", "Education Administrator", "Curriculum Developer"],
+                    healthcare: ["Healthcare Administrator", "Nurse", "Health Policy Analyst"],
+                    infrastructure: ["Urban Planner", "Project Manager", "Civil Engineer"]
+                },
+                others: {
+                    marketing: ["Marketing Manager", "Content Strategist", "SEO Specialist"],
+                    finance: ["Financial Analyst", "Investment Banker", "Accountant"],
+                    sales: ["Sales Executive", "Business Development Manager", "Sales Director"],
+                    human-resources: ["HR Manager", "Talent Acquisition Specialist", "Training Manager"],
+                    legal: ["Corporate Lawyer", "Legal Advisor", "Compliance Officer"]
+                }
+            };
+
+            const domain = userData.domain;
+            const field = userData.assessment1.toLowerCase().replace(' ', '-');
+            const recommendedJobs = recommendations[domain][field];
+
+            const recommendationContainer = document.getElementById('recommendationContainer');
+            recommendationContainer.innerHTML = `<h2>We recommend the following jobs for you:</h2><ul>${recommendedJobs.map(job => `<li>${job}</li>`).join('')}</ul>`;
+
+            document.getElementById('recommendation-page').style.display = 'block';
+        }
+
+        function finish() {
+            document.getElementById('recommendation-page').style.display = 'none';
+            document.getElementById('thank-you-page').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
