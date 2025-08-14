@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment 3</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* Assessment page styling */
+        .assessment-page {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            color: #ecf0f1;
+        }
+
+        #questionsContainer {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #f0a500;
+            outline: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 165, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: #1c8686;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(240, 165, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+            .assessment-page {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-page">
+        <h1>Assessment 3: Final Questions</h1>
+        <div id="questionsContainer"></div>
+        <button type="button" onclick="submitAssessment3()">Submit</button>
+    </div>
+    
+    <script>
+        const userData = {
+            assessment1: 'networking' // Example value for testing
+        };
+
+        const finalQuestions = {
+            // IT Sector Questions
+            it: {
+                "networking": [
+                    "What is subnetting?",
+                    "How do you configure a VLAN?",
+                    "Explain the difference between public and private IP.",
+                    "What are network topologies?",
+                    "How do you configure a firewall?"
+                ],
+                "ai-ml": [
+                    "Explain reinforcement learning.",
+                    "What is gradient descent?",
+                    "What is the use of confusion matrix?",
+                    "Explain NLP.",
+                    "What is overfitting in AI models?"
+                ],
+                "cyber-security": [
+                    "What is the difference between a virus and a worm?",
+                    "Explain the concept of encryption.",
+                    "What are the types of cyber attacks?",
+                    "How do you secure a wireless network?",
+                    "What is a firewall and how does it work?"
+                ],
+                "frontend-developer": [
+                    "What is the DOM?",
+                    "Explain the box model in CSS.",
+                    "What are JavaScript closures?",
+                    "How do you optimize a website for performance?",
+                    "What is responsive web design?"
+                ],
+                "backend-developer": [
+                    "What is REST API and how does it work?",
+                    "Explain the concept of middleware in backend development.",
+                    "What is database indexing?",
+                    "What are microservices?",
+                    "How do you manage session in backend development?"
+                ]
+            },
+            // Public Domain Questions
+            public: {
+                "civil-services": [
+                    "What are the roles and responsibilities of civil servants?",
+                    "Explain the concept of public administration.",
+                    "What are the key challenges faced by civil services?",
+                    "What is e-governance?",
+                    "How do civil services impact policy-making?"
+                ],
+                "defense": [
+                    "What are the branches of the defense forces?",
+                    "Explain the importance of cybersecurity in defense.",
+                    "What are the various ranks in the defense sector?",
+                    "What is defense diplomacy?",
+                    "How does modern technology influence defense strategies?"
+                ],
+                "education": [
+                    "What are the challenges in modern education systems?",
+                    "Explain the role of technology in education.",
+                    "What is inclusive education?",
+                    "How do you improve student engagement?",
+                    "What is the role of teachers in curriculum development?"
+                ],
+                "healthcare": [
+                    "What are the primary challenges in healthcare management?",
+                    "Explain the role of technology in modern healthcare.",
+                    "What are the different types of healthcare systems?",
+                    "How do you improve patient care in hospitals?",
+                    "What are the ethics involved in healthcare?"
+                ],
+                "infrastructure": [
+                    "What are the key components of urban infrastructure?",
+                    "How does infrastructure development impact the economy?",
+                    "Explain the importance of sustainable infrastructure.",
+                    "What are the challenges in infrastructure project management?",
+                    "What is the role of technology in infrastructure development?"
+                ]
+            },
+            // Other Sector Questions
+            others: {
+                "marketing": [
+                    "What are the key elements of a marketing strategy?",
+                    "How do you conduct market research?",
+                    "What is the role of social media in marketing?",
+                    "Explain the concept of branding.",
+                    "What are the 4 Ps of marketing?"
+                ],
+                "finance": [
+                    "What is the difference between assets and liabilities?",
+                    "Explain the concept of compound interest.",
+                    "What are the key financial statements in a business?",
+                    "What is the role of financial management?",
+                    "What is the stock market and how does it work?"
+                ],
+                "sales": [
+                    "What are the steps in the sales process?",
+                    "How do you handle customer objections?",
+                    "What is the importance of customer relationship management (CRM)?",
+                    "Explain the concept of a sales funnel.",
+                    "What is the role of a sales manager?"
+                ],
+                "human-resources": [
+                    "What is the role of HR in an organization?",
+                    "Explain the recruitment process.",
+                    "What are the key functions of human resource management?",
+                    "How do you handle employee grievances?",
+                    "What is performance management?"
+                ],
+                "legal": [
+                    "What is the difference between civil and criminal law?",
+                    "Explain the role of a lawyer in the justice system.",
+                    "What are the different types of contracts?",
+                    "How do you draft legal documents?",
+                    "What is the importance of legal compliance in business?"
+                ]
+            }
+        };
+
+        function loadAssessment3() {
+            const domain = userData.assessment1.toLowerCase().replace(' ', '-');
+            const container = document.getElementById('questionsContainer');
+
+            let questions = [];
+            if (finalQuestions.it[domain]) {
+                questions = finalQuestions.it[domain];
+            } else if (finalQuestions.public[domain]) {
+                questions = finalQuestions.public[domain];
+            } else if (finalQuestions.others[domain]) {
+                questions = finalQuestions.others[domain];
+            }
+
+            if (questions.length === 0) {
+                alert('No questions found for the selected domain. Please check your selection.');
+                return;
+            }
+
+            container.innerHTML = ''; // Clear previous content
+            questions.forEach((question, index) => {
+                container.innerHTML += `<label>${index + 1}. ${question}</label><br><input type="text" id="answer${index}" required><br>`;
+            });
+        }
+
+        function submitAssessment3() {
+            const domain = userData.assessment1.toLowerCase().replace(' ', '-');
+            const answers = [];
+            let questions = [];
+
+            if (finalQuestions.it[domain]) {
+                questions = finalQuestions.it[domain];
+            } else if (finalQuestions.public[domain]) {
+                questions = finalQuestions.public[domain];
+            } else if (finalQuestions.others[domain]) {
+                questions = finalQuestions.others[domain];
+            }
+
+            questions.forEach((question, index) => {
+                const answer = document.getElementById(`answer${index}`).value;
+                if (answer) {
+                    answers.push(answer);
+                }
+            });
+
+            if (answers.length === 5) {
+                userData.assessment3 = answers;
+                window.location.href = 'rec.html';
+            } else {
+                alert('Please answer all the questions.');
+            }
+        }
+
+        window.onload = loadAssessment3;
+    </script>
+</body>
+</html>
